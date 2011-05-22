@@ -38,7 +38,7 @@ char* strqsep(char** str, const char* delim, const char* quotes)
 	char* p = *str;
 	if (!p) return NULL;
 	memset(dtable,0,sizeof(dtable));
-	memset(qtable,0,sizeof(dtable));
+	memset(qtable,0,sizeof(qtable));
 	{
 		const unsigned char* d = reinterpret_cast<const unsigned char*>(delim);
 		while (*d)
