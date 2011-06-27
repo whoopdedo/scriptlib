@@ -24,5 +24,10 @@
 
 void InitScriptLib(void)
 {
-	DarkHookInitializeService(g_pScriptManager, g_pMalloc);
+	static bool initialized = false;
+	if (!initialized)
+	{
+		initialized = true;
+		DarkHookInitializeService(g_pScriptManager, g_pMalloc);
+	}
 }
