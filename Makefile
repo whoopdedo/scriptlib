@@ -30,6 +30,7 @@ bin3dir = ./bin3
 bindirectories = $(bin1dir) $(bin2dir) $(bin3dir)
 
 LGDIR = ../lg
+DH2DIR = ../DH2
 
 CC = gcc
 CXX = g++
@@ -41,10 +42,11 @@ CXXDEBUG = -O2 -DNDEBUG
 D =
 
 ARFLAGS = rc
-INCLUDES = -I. -I$(srcdir) -I$(LGDIR)
+INCLUDES = -I. -I$(srcdir) -I$(LGDIR) -I$(DH2DIR)
 CXXFLAGS = -W -Wall -masm=intel
 
 SRCS =  ScriptLib.cpp \
+	InitScriptLib.cpp \
 	GetObjectParams.cpp \
 	GetObjectParamsDirect.cpp \
 	SetObjectParams.cpp \

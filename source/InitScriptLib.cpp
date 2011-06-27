@@ -1,5 +1,5 @@
 /******************************************************************************
- *  SetObjectParamInt.cpp
+ *  InitScriptLib.cpp
  *
  *  This file is part of Object Script Library
  *  Copyright (C) 2011 Tom N Harris <telliamed@whoopdedo.org>
@@ -20,21 +20,9 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
-#include <scriptparam.h>
+#include <darkhook.h>
 
-int SetObjectParamInt(int iObject, const char* pszParam, int iVal)
+void InitScriptLib(void)
 {
-	if (!pszParam)
-		return 1;
-	InitScriptLib();
-	try
-	{
-		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
-		return pScriptParams->Set(iObject, pszParam, iVal);
-	}
-	catch (no_interface&)
-	{
-		DebugPrintf("Unable to locate ScriptParam service.");
-		return 1;
-	}
+	DarkHookInitializeService(g_pScriptManager, g_pMalloc);
 }

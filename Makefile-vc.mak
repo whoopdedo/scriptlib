@@ -30,6 +30,7 @@ bin3dir = .\bin3
 bindirectories = $(bin1dir) $(bin2dir) $(bin3dir)
 
 LGDIR = ..\lg
+DH2DIR = ..\DH2
 
 DEFINES = -DWINVER=0x0400 -D_WIN32_WINNT=0x0400 -DWIN32_LEAN_AND_MEAN -D_CRT_SECURE_NO_WARNINGS
 
@@ -39,11 +40,12 @@ CXXDEBUG = -MTd -Od -DDEBUG
 CXXDEBUG = -MT -Ox -DNDEBUG
 !endif
 
-INCLUDES = -I. -I$(srcdir) -I$(LGDIR)
+INCLUDES = -I. -I$(srcdir) -I$(LGDIR) -I$(DH2DIR)
 CXXFLAGS = $(cflags) -nologo -W3 -wd4800 -TP -EHsc
 LIBFLAGS = -nologo
 
 SRCS =  $(srcdir)\ScriptLib.cpp \
+	$(srcdir)\InitScriptLib.cpp \
 	$(srcdir)\GetObjectParams.cpp \
 	$(srcdir)\GetObjectParamsDirect.cpp \
 	$(srcdir)\SetObjectParams.cpp \

@@ -20,21 +20,21 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
-#include <cstring>
-#include <cstdio>
+#include <scriptparam.h>
 
 int SetObjectParamString(int iObject, const char* pszParam, const char* pszVal)
 {
 	if (!pszParam || !pszVal)
 		return 1;
-	char* params = GetObjectParams(iObject);
-	char* newparams = SetParamString(params, pszParam, pszVal);
-	if (params) g_pMalloc->Free(params);
-	int iRet = 1;
-	if (newparams)
+	InitScriptLib();
+	try
 	{
-		iRet = SetObjectParams(iObject, newparams);
-		g_pMalloc->Free(newparams);
+		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
+		return pScriptParams->Set(iObject, pszParam, pszVal);
 	}
-	return iRet;
+	catch (no_interface&)
+	{
+		DebugPrintf("Unable to locate ScriptParam service.");
+		return 1;
+	}
 }

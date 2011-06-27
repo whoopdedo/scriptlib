@@ -20,9 +20,20 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
-#include <cstdio>
+#include <scriptparam.h>
 
 int SetObjectParamBool(int iObject, const char* pszParam, bool bVal)
 {
-	return SetObjectParamString(iObject, pszParam, (bVal) ? "true" : "false");
+	const char* pszVal = bVal ? "true" : "false";
+	InitScriptLib();
+	try
+	{
+		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
+		return pScriptParams->Set(iObject, pszParam, pszVal);
+	}
+	catch (no_interface&)
+	{
+		DebugPrintf("Unable to locate ScriptParam service.");
+		return 1;
+	}
 }

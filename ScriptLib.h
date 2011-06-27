@@ -42,10 +42,12 @@ interface IScript;
 extern IMalloc* g_pMalloc;
 extern IScriptMan* g_pScriptManager;
 
-
 /* Game-dependent string constants. */
 extern const char* g_pszDesignNote;
 extern const char* g_pszCDLinkFlavor;
+
+/* This is called automatically when needed. */
+void InitScriptLib(void);
 
 /*************
  * Properties
@@ -68,6 +70,8 @@ int SetObjectParamString(int iObject, const char* pszParam, const char* pszVal);
 int SetObjectParamInt(int iObject, const char* pszParam, int iVal);
 int SetObjectParamFloat(int iObject, const char* pszParam, float fVal);
 int SetObjectParamBool(int iObject, const char* pszParam, bool bVal);
+int GetObjectParamObject(int iObject, const char* pszParam, int iDefault = 0);
+int GetObjectParamTime(int iObject, const char* pszParam, int iDefault = 0);
 // Same, but uses the supplied string instead of extracting from the object.
 char* GetParamString(const char* pszString, const char* pszParam, const char* pszDefault = NULL);
 int GetParamInt(const char* pszString, const char* pszParam, int iDefault = 0);
@@ -77,14 +81,11 @@ char* SetParamString(char* pszString, const char* pszParam, const char* pszVal);
 char* SetParamInt(char* pszString, const char* pszParam, int iVal);
 char* SetParamFloat(char* pszString, const char* pszParam, float fVal);
 char* SetParamBool(char* pszString, const char* pszParam, bool bVal);
+int GetParamObject(const char* pszString, const char* pszParam, int iDefault = 0);
+int GetParamTime(const char* pszString, const char* pszParam, int iDefault = 0);
 // Delete a specific parameter from the Design Note.
 // All occurances of the parameter are removed.
 bool RemoveObjectParam(int iObject, const char* pszParam);
-
-int GetObjectParamObject(int iObject, const char* pszParam, int iDefault = 0);
-int GetParamObject(const char* pszString, const char* pszParam, int iDefault = 0);
-int GetObjectParamTime(int iObject, const char* pszParam, int iDefault = 0);
-int GetParamTime(const char* pszString, const char* pszParam, int iDefault = 0);
 
 
 /***********

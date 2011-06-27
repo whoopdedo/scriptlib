@@ -20,13 +20,19 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
+#include <scriptparam.h>
 
 int GetObjectParamTime(int iObject, const char* pszParam, int iDefault)
 {
-	char* params = GetObjectParams(iObject);
-	if (!params)
-		return iDefault;
-	int iRet = GetParamTime(params, pszParam, iDefault);
-	g_pMalloc->Free(params);
-	return iRet;
+	InitScriptLib();
+	try
+	{
+		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
+		return pScriptParams->GetTime(iObject, pszParam, iDefault);
+	}
+	catch (no_interface&)
+	{
+		DebugPrintf("Unable to locate ScriptParam service.");
+		return 0;
+	}
 }

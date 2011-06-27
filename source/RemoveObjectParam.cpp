@@ -20,44 +20,21 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
-#include <cstring>
-#include <cctype>
-#include <malloc.h>
-
-extern const char* g_pszParamDelim;
-extern const char* g_pszQuotes;
+#include <scriptparam.h>
 
 bool RemoveObjectParam(int iObject, const char* pszParam)
 {
-	char* pszString = GetObjectParams(iObject);
-	if (!pszString)
+	if (!pszParam)
 		return false;
-	char* pszNew = reinterpret_cast<char*>(alloca(strlen(pszString) + 1));
-	if (!pszNew)
-		return false;
-	*pszNew = '\0';
-	char* pszSep, *pszToken;
-	for (pszSep = pszString, pszToken = strqsep(&pszSep, g_pszParamDelim, g_pszQuotes);
-	     pszToken; pszToken = strqsep(&pszSep, g_pszParamDelim, g_pszQuotes))
+	InitScriptLib();
+	try
 	{
-		while (isspace(*pszToken)) ++pszToken;
-		if (!*pszToken)
-			continue;
-		char* pszStart = strchr(pszToken, '=');
-		if (pszStart)
-			*pszStart++ = '\0';
-		if (_stricmp(pszToken, pszParam))
-		{
-			strcat(pszNew, pszToken);
-			if (pszStart)
-			{
-				strcat(pszNew, "=");
-				strcat(pszNew, pszStart);
-			}
-			strcat(pszNew, g_pszParamDelim);
-		}
+		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
+		return S_OK == pScriptParams->Unset(iObject, pszParam);
 	}
-	SetObjectParams(iObject, pszNew);
-	g_pMalloc->Free(pszString);
-	return true;
+	catch (no_interface&)
+	{
+		DebugPrintf("Unable to locate ScriptParam service.");
+		return false;
+	}
 }

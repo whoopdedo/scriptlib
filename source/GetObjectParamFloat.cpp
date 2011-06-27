@@ -20,13 +20,19 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
+#include <scriptparam.h>
 
 float GetObjectParamFloat(int iObject, const char* pszParam, float fDefault)
 {
-	char* params = GetObjectParams(iObject);
-	if (!params)
-		return fDefault;
-	float fRet = GetParamFloat(params, pszParam, fDefault);
-	g_pMalloc->Free(params);
-	return fRet;
+	InitScriptLib();
+	try
+	{
+		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
+		return pScriptParams->GetFloat(iObject, pszParam, fDefault);
+	}
+	catch (no_interface&)
+	{
+		DebugPrintf("Unable to locate ScriptParam service.");
+		return 0;
+	}
 }

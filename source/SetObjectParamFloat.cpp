@@ -20,11 +20,21 @@
  *****************************************************************************/
 
 #include "ScriptLib.h"
-#include <cstdio>
+#include <scriptparam.h>
 
 int SetObjectParamFloat(int iObject, const char* pszParam, float fVal)
 {
-	char psz[44];
-	sprintf(psz, "%0.2f", fVal);
-	return SetObjectParamString(iObject, pszParam, psz);
+	if (!pszParam)
+		return 1;
+	InitScriptLib();
+	try
+	{
+		SService<IScriptParamScriptService> pScriptParams(g_pScriptManager);
+		return pScriptParams->Set(iObject, pszParam, fVal);
+	}
+	catch (no_interface&)
+	{
+		DebugPrintf("Unable to locate ScriptParam service.");
+		return 1;
+	}
 }
