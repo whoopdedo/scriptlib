@@ -34,6 +34,7 @@ LGDIR = ../lg
 CC = gcc
 CXX = g++
 AR = ar
+MKDIR = mkdir -p
 
 DEFINES = -DWINVER=0x0400 -D_WIN32_WINNT=0x0400 -DWIN32_LEAN_AND_MEAN
 
@@ -153,11 +154,11 @@ clean:
 	$(RM) $(bin1dir)/*.o $(bin2dir)/*.o $(bin3dir)/*.o $(SCRIPTLIB1) $(SCRIPTLIB1D) $(SCRIPTLIB2) $(SCRIPTLIB2D) $(SCRIPTLIB3) $(SCRIPTLIB3D)
 
 $(bin1dir):
-	mkdir -p $@
+	$(MKDIR) $@
 $(bin2dir):
-	mkdir -p $@
+	$(MKDIR) $@
 $(bin3dir):
-	mkdir -p $@
+	$(MKDIR) $@
 
 $(SCRIPTLIB1): $(OBJS1)
 	$(AR) $(ARFLAGS) $@ $?
